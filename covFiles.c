@@ -184,6 +184,14 @@ static void swap_float(float *d, int num)
     }
 }
 
+static int littleEndian()
+{
+    int test = 0x12345678;
+    if (0x78 == *(unsigned char *)(int *)&test)
+        return 1;
+    return 0;
+}
+
 int covOpenOutFile(const char *filename)
 {
 #ifdef _WIN32
@@ -207,11 +215,15 @@ int covOpenOutFile(const char *filename)
 #endif
     if (fd == -1)
         return 0;
-#ifdef BYTESWAP
-    COV_WRITE(fd, "COV_BE", 6);
-#else
-    COV_WRITE(fd, "COV_LE", 6);
-#endif
+    if (littleEndian())
+    {
+        // really?
+        COV_WRITE(fd, "COV_BE", 6);
+    }
+    else
+    {
+        COV_WRITE(fd, "COV_LE", 6);
+    }
     return fd;
 }
 
@@ -238,9 +250,8 @@ int covOpenInFile(const char *filename)
     COV_READ(fd, magic, 6);
     magic[6] = 0;
 
-#ifdef BYTESWAP
-    fd *= -1;
-#endif
+    if (littleEndian())
+        fd *= -1;
 
     if (strcmp(magic, "COV_BE") == 0)
         fd *= -1;
