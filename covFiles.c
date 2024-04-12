@@ -1842,6 +1842,11 @@ int covReadINTDT(int fd, int numElem, int *x)
     return covIoINTDT(fd, READ_COVISE, &numElem, x, NULL, NULL, NULL);
 }
 
+int covSkipINTDT(int fd, int numElem)
+{
+    return covIoINTDT(fd, SKIP_COVISE, &numElem, NULL, NULL, NULL, NULL);
+}
+
 /*  *********************************
                   BYTEDT
     *********************************/
@@ -1881,6 +1886,11 @@ int covReadSizeBYTEDT(int fd, int *numElem)
 int covReadBYTEDT(int fd, int numElem, unsigned char *x)
 {
     return covIoBYTEDT(fd, READ_COVISE, &numElem, x, NULL, NULL, NULL);
+}
+
+int covSkipBYTEDT(int fd, int numElem)
+{
+    return covIoBYTEDT(fd, SKIP_COVISE, &numElem, NULL, NULL, NULL, NULL);
 }
 
 /* OCT Trees */
