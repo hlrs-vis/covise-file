@@ -26,7 +26,7 @@
 #define COIMPORT __declspec(dllimport)
 #define COEXPORT __declspec(dllexport)
 
-#elif defined(__GNUC__) && __GNUC__ >= 4 && !defined(CO_ia64icc)
+#elif (defined(__GNUC__) && __GNUC__ >= 4) || defined(__clang__)
 #define COEXPORT __attribute__((visibility("default")))
 #define COIMPORT COEXPORT
 
